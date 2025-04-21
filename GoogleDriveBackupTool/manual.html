@@ -1,0 +1,535 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Drive ZIP Backup Tool - User Manual</title>
+
+    <!-- Link to external CSS -->
+    <link rel="stylesheet" href="manual_styles.css">
+
+    <!-- Link to external JavaScript with defer -->
+    <script src="manual_script.js" defer></script>
+
+</head>
+<body>
+
+    <!-- Fixed Top Bar -->
+    <header class="top-bar">
+        <button class="hamburger-btn" id="hamburger-btn" aria-label="Toggle Menu" aria-expanded="false" aria-controls="side-nav">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
+        <span class="top-bar-title">GDrvBackup Tool Manual</span>
+    </header>
+
+    <!-- Side Navigation Panel -->
+    <nav class="side-nav" id="side-nav" aria-hidden="true">
+        <!-- Language Selection -->
+        <div class="nav-lang-switch">
+            <h3>Language / Sprache</h3>
+            <button id="nav-btn-en" onclick="switchLanguage('en')">English</button>
+            <button id="nav-btn-de" onclick="switchLanguage('de')">Deutsch</button>
+        </div>
+
+        <!-- Table of Contents -->
+        <div class="nav-toc">
+            <h3>Table of Contents / Inhaltsverzeichnis</h3>
+            <!-- English TOC -->
+            <div class="toc-lang-container" id="toc-en">
+                <ol>
+                    <li><a href="#en-intro">1. Introduction</a></li>
+                    <li><a href="#en-features">2. Features</a></li>
+                    <li><a href="#en-requirements">3. Requirements</a></li>
+                    <li><a href="#en-setup">4. Setup & First Run</a></li>
+                    <li><a href="#en-config">5. Configuration</a></li>
+                    <li><a href="#en-interactive">6. Interactive Mode</a></li>
+                    <li><a href="#en-cli">7. Command-Line Mode</a></li>
+                    <li><a href="#en-notes">8. Notes & Best Practices</a></li>
+                    <li><a href="#en-troubleshooting">9. Troubleshooting</a></li>
+                    <li><a href="#en-disclaimer">10. Disclaimer</a></li>
+                </ol>
+            </div>
+            <!-- German TOC -->
+            <div class="toc-lang-container" id="toc-de">
+                <ol>
+                    <li><a href="#de-intro">1. Einleitung</a></li>
+                    <li><a href="#de-features">2. Funktionen</a></li>
+                    <li><a href="#de-requirements">3. Voraussetzungen</a></li>
+                    <li><a href="#de-setup">4. Einrichtung & Erster Start</a></li>
+                    <li><a href="#de-config">5. Konfiguration</a></li>
+                    <li><a href="#de-interactive">6. Interaktiver Modus</a></li>
+                    <li><a href="#de-cli">7. Kommandozeilenmodus</a></li>
+                    <li><a href="#de-notes">8. Hinweise & Empfehlungen</a></li>
+                    <li><a href="#de-troubleshooting">9. Fehlerbehebung</a></li>
+                    <li><a href="#de-disclaimer">10. Haftungsausschluss</a></li>
+                </ol>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Overlay -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Main Content Area -->
+    <main class="main-content" id="main-content">
+
+        <!-- ==================== English Content ==================== -->
+        <div class="lang-content lang-en">
+            <!-- VERSION 1.4 ENGLISH CONTENT START -->
+            <h1>Google Drive ZIP Backup Tool - User Manual</h1>
+            <p><strong>Version: 1.4</strong></p>
+
+            <section>
+                <h2 id="en-intro">1. Introduction</h2>
+                <p>The Google Drive ZIP Backup Tool is an application designed to back up specified folders from your Google Drive account into compressed ZIP files stored locally on your computer. It operates in two modes:</p>
+                <ul>
+                    <li><strong>Interactive Mode:</strong> A menu-driven interface for users who prefer prompts and choices.</li>
+                    <li><strong>Command-Line Mode:</strong> Allows running operations directly via command-line arguments, suitable for scripting and automation.</li>
+                </ul>
+                <p>It also provides functionality to restore backups, resume interrupted restores, repair potentially incomplete archives, manage configuration profiles, and <span class="new-feature">(New)</span> perform file transfers in parallel.</p>
+            </section>
+
+            <section>
+                <h2 id="en-features">2. Features</h2>
+                <ul>
+                    <li><strong>Backup:</strong> Download files and folders from a specified Google Drive folder.</li>
+                    <li><strong>Compression:</strong> Store backups locally as standard ZIP archives.</li>
+                    <li><strong>Incremental Backups:</strong> Option to compare against a previous backup ZIP to only download new or changed files, saving time and bandwidth.</li>
+                    <li><strong>Google Docs Conversion:</strong> Converts Google Docs, Sheets, and Slides to standard formats (docx, xlsx, pptx) during backup.</li>
+                    <li><strong>Restore:</strong> Upload files from a backup archive back into a specified Google Drive folder, recreating the folder structure.</li>
+                    <li><strong>Resume Restore:</strong> Resume an interrupted restore operation from the point it left off.</li>
+                    <li><strong>Repair:</strong> Attempt to fix incomplete backup archives by re-downloading missing files based on the archive's manifest.</li>
+                    <li><span class="new-feature">(New)</span> <strong>Parallel Operations:</strong> Configure the number of simultaneous file downloads/uploads during Backup, Restore, Resume, and Repair operations to potentially speed up transfers.</li>
+                    <li><strong>Exclusions:</strong> Specify relative subfolder paths within the backup root to exclude them from backups.</li>
+                    <li><strong>Configuration Profiles:</strong> Save and load different application settings.</li>
+                    <li><strong>Authentication:</strong> Securely authenticates with your Google Account using OAuth 2.0.</li>
+                    <li><strong>Command-line Operation:</strong> Execute all major actions non-interactively for automated scripting.</li>
+                    <li><strong>Conditional Backup (CLI):</strong> Option to only start a backup if a configured time interval has passed.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2 id="en-requirements">3. Requirements</h2>
+                <ul>
+                    <li><strong>Google Account:</strong> A standard Google account (<code>@gmail.com</code>) or Google Workspace account.</li>
+                    <li><strong>Google Drive API Enabled:</strong> You need to enable the Google Drive API for your account via the Google Cloud Console.</li>
+                    <li><strong>OAuth 2.0 Credentials (<code>client_secrets.json</code>):</strong> You must download credentials for a <strong>Desktop application</strong> from the Google Cloud Console.</li>
+                    <li><strong>.NET Runtime:</strong> The application requires a compatible .NET Runtime (e.g., .NET 6 or later) installed on your Windows, macOS, or Linux computer.</li>
+                    <li><strong>Application Files:</strong> The compiled application executable (<code>GoogleDriveZipBackupTool.exe</code> or similar) and its dependencies.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2 id="en-setup">4. Setup & First Run</h2>
+                <h3>Getting <code>client_secrets.json</code></h3>
+                <p>This is the most crucial setup step.</p>
+                <ol>
+                    <li>Go to the <a href="https://console.cloud.google.com/" target="_blank" rel="noopener noreferrer">Google Cloud Console</a>.</li>
+                    <li>Create a new project or select an existing one.</li>
+                    <li>Navigate to <strong>APIs & Services -> Library</strong>.</li>
+                    <li>Search for "Google Drive API" and <strong>Enable</strong> it for your project.</li>
+                    <li>Navigate to <strong>APIs & Services -> Credentials</strong>.</li>
+                    <li>Click <strong>+ CREATE CREDENTIALS</strong> and select <strong>OAuth client ID</strong>.</li>
+                    <li>If prompted, configure the OAuth consent screen first (select "External" user type, provide an app name like "My Drive Backup", your user support email, and developer contact email, then save). You don't need complex scopes or verification for personal use.</li>
+                    <li>Choose <strong>Desktop app</strong> as the Application type. Give it a name (e.g., "Drive Backup Tool Client").</li>
+                    <li>Click <strong>Create</strong>.</li>
+                    <li>A window will pop up showing your Client ID and Client Secret. Click <strong>DOWNLOAD JSON</strong>.</li>
+                    <li>Rename the downloaded file to exactly <strong><code>client_secrets.json</code></strong>.</li>
+                    <li>Place this <strong><code>client_secrets.json</code></strong> file in the <strong>same directory</strong> as the application executable (<code>GoogleDriveZipBackupTool.exe</code>).</li>
+                </ol>
+                <p class="warning">WARNING: Treat <code>client_secrets.json</code> like a password. Do not share it or commit it to public repositories.</p>
+
+                <h3>Initial Authentication</h3>
+                <ol>
+                    <li>Run the application executable (e.g., double-click <code>GoogleDriveZipBackupTool.exe</code> or run <code>dotnet GoogleDriveZipBackupTool.dll</code> from the command line).</li>
+                    <li>The application will detect it needs authorization. Your default web browser should automatically open to a Google login page.</li>
+                    <li>Log in to the Google Account you want to back up from (or restore to).</li>
+                    <li>Grant the application permission to access your Google Drive files (usually "See, edit, create, and delete all of your Google Drive files").</li>
+                    <li>If successful, you'll see a "Received verification code. You may now close this window." message in your browser.</li>
+                    <li>The application will store the authorization token securely in a special folder within your user profile's Application Data directory (e.g., <code>%APPDATA%\GoogleDriveZipBackupTool\.credentials</code> on Windows). It will reuse this token for future runs, so you typically only need to do this once per user/machine unless you revoke access or the token expires.</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2 id="en-config">5. Configuration (via <code>app_settings.json</code>)</h2>
+                <p>The application uses a file named <strong><code>app_settings.json</code></strong> located in the same directory as the executable to store its primary configuration. You can manage these settings interactively or by editing the file directly (with caution).</p>
+
+                <h3>Accessing Settings (Interactive)</h3>
+                <p>In interactive mode (running the tool without command-line arguments), choose option <strong>4. Configure Settings</strong> from the main menu.</p>
+
+                <h3>Settings Explained</h3>
+                <p>You will be presented with the current settings and options to change them:</p>
+                <ol>
+                    <li><strong><code>GoogleDriveFolderId</code></strong>: The unique ID of the specific folder in your Google Drive that you want to back up. (Required for Backup)</li>
+                    <li><strong><code>LocalBackupArchivePath</code></strong>: The directory path on your computer where the final backup ZIP files will be saved. (Required for Backup)</li>
+                    <li><strong><code>LocalTempWorkPath</code></strong>: A directory path on your computer used for temporary work during operations. (Required for All Operations)</li>
+                    <li><strong><code>GoogleDriveRestoreParentId</code></strong>: The unique ID of the Google Drive folder into which you want to restore files. (Required for Fresh Restore) <span class="note">(For resume, the ID from the state file is used.)</span></li>
+                    <li><strong><code>BackupCycleHours</code></strong>: Sets a threshold (in hours) for backup reminders and conditional CLI execution. (Default: 168)</li>
+                    <li><strong><code>ShowVerboseProgress</code></strong>: Display detailed progress (<code>true</code>) or summary updates (<code>false</code>). (Default: true)</li>
+                    <li><span class="new-feature">(New)</span> <strong><code>MaxParallelTasks</code></strong>: The maximum number of files to download or upload simultaneously. (Default: 1, Min: 1, Max configurable but currently capped at 10 internally). Higher values may increase speed but also resource usage and risk of hitting API rate limits.</li>
+                    <li><strong><code>ExcludedRelativePaths</code></strong>: (Managed via Option 6) A list of relative subfolder paths to exclude from backups.</li>
+                    <li><strong><code>LastSuccessfulBackupUtc</code></strong>: (Not user-editable) Stores the UTC timestamp of the last successful CLI backup using this settings file. Used for the <code>runIfDue</code> feature.</li>
+                </ol>
+                <p>In the interactive settings menu, enter the number of the setting to change (1-7), provide the new value, or press Enter to accept the current/default. Choose <strong>S</strong> to save or <strong>C</strong> to cancel.</p>
+            </section>
+
+            <section>
+                <h2 id="en-interactive">6. Using the Tool - Interactive Mode</h2>
+                <p>This section describes using the tool when run <strong>without</strong> any command-line arguments, presenting a menu-driven interface.</p>
+
+                <h3>1. Create New Backup Archive (.zip)</h3>
+                <ul>
+                    <li><strong>Purpose:</strong> Backs up the configured Google Drive folder to a local ZIP file.</li>
+                    <li><strong>Requires:</strong> <code>GoogleDriveFolderId</code>, <code>LocalBackupArchivePath</code>, <code>LocalTempWorkPath</code>.</li>
+                    <li><strong>Process:</strong> Select option, optionally provide previous archive for incremental backup. Files will be copied/downloaded using up to <code>MaxParallelTasks</code> simultaneously.</li>
+                </ul>
+
+                <h3>2. Restore from Backup Archive (.zip)</h3>
+                <ul>
+                    <li><strong>Purpose:</strong> Uploads files from a backup ZIP archive back into Google Drive.</li>
+                    <li><strong>Requires:</strong> <code>LocalTempWorkPath</code>, <code>GoogleDriveRestoreParentId</code>.</li>
+                    <li><strong>Process:</strong> Select option, provide ZIP path. The tool extracts, prepares a state file in a temp folder (path displayed), creates Drive folders (sequentially), then uploads files using up to <code>MaxParallelTasks</code> simultaneously. Temp folder deleted on success, kept on failure/cancel.</li>
+                </ul>
+
+                <h3>3. Resume Interrupted Restore...</h3>
+                <ul>
+                    <li><strong>Purpose:</strong> Continue an interrupted restore operation.</li>
+                    <li><strong>Requires:</strong> The temporary restore folder from the previous attempt (containing <code>_manifest.json</code> and <code>_restore_state.json</code>).</li>
+                    <li><strong>Process:</strong> Select option, provide the temporary folder path. The tool loads state, determines remaining files, and uploads them using up to <code>MaxParallelTasks</code> simultaneously. Temp folder deleted on success, kept on failure/cancel.</li>
+                </ul>
+
+                <h3>4. Configure Settings</h3>
+                <ul>
+                    <li><strong>Purpose:</strong> View and modify application settings (including <code>MaxParallelTasks</code>).</li>
+                    <li>See: <a href="#en-config">Section 5. Configuration</a> above for details.</li>
+                </ul>
+
+                <h3>5. Repair Backup Archive (.zip)</h3>
+                <ul>
+                    <li><strong>Purpose:</strong> Attempt to fix an incomplete backup archive.</li>
+                    <li><strong>Requires:</strong> <code>LocalTempWorkPath</code>.</li>
+                    <li><strong>Process:</strong> Select option, provide ZIP path. Extracts, checks manifest, attempts to re-download missing files (using up to <code>MaxParallelTasks</code> simultaneously), creates a new `_REPAIRED_` archive if successful.</li>
+                </ul>
+
+                <h3>6. Manage Exclusions (Subfolders)</h3>
+                <ul>
+                    <li><strong>Purpose:</strong> Define subfolders within the backup root to exclude.</li>
+                    <li><strong>Process:</strong> Use the dedicated menu to Add/Remove/Clear/Save/Discard relative exclusion paths (e.g., <code>/Temp</code>).</li>
+                </ul>
+
+                <h3>7. Save Settings Profile...</h3>
+                <ul><li><strong>Purpose:</strong> Save current settings (paths, IDs, exclusions, parallelism, etc.) to a separate file.</li></ul>
+
+                <h3>8. Load Settings Profile...</h3>
+                <ul><li><strong>Purpose:</strong> Load settings from a profile file, replacing current settings and saving to <code>app_settings.json</code> if confirmed.</li></ul>
+
+                <h3>9. Check Backup Status Reminder</h3>
+                <ul><li><strong>Purpose:</strong> Check last successful backup time against configured cycle.</li></ul>
+
+                <h3>10. Exit</h3>
+                <p>Closes the application.</p>
+            </section>
+
+            <section>
+                <h2 id="en-cli">7. Using the Tool - Command-Line Mode</h2>
+                <h3>Overview</h3>
+                <p>Run operations non-interactively via command-line arguments (<code>key=value</code>).</p>
+
+                <h3>Syntax</h3>
+                <pre><code class="language-bash">GoogleDriveZipBackupTool.exe <action> [arguments...]
+dotnet GoogleDriveZipBackupTool.dll <action> [arguments...]</code></pre>
+
+                <h3>Required Argument: <code>action</code></h3>
+                <ul><li><code>backup</code> | <code>restore</code> | <code>repair</code> | <code>resume-restore</code></li></ul>
+
+                <h3>Optional/Required Arguments (Contextual)</h3>
+                <ul>
+                    <li><code>settings=path/to/config.settings.json</code> <em>(Optional)</em>: Use specific settings file.</li>
+                    <li><code>input=path/to/archive.zip</code> <strong>(Required for <code>restore</code>, <code>repair</code>)</strong></li>
+                    <li><code>resume=path/to/temp_restore_folder</code> <strong>(Required for <code>resume-restore</code>)</strong></li>
+                    <li><code>previous=path/to/previous_archive.zip</code> <em>(Optional for <code>backup</code>)</em></li>
+                    <li><code>runIfDue=true</code> <em>(Optional for <code>backup</code>)</em>: Run only if cycle exceeded.</li>
+                    <li><span class="new-feature">(New)</span> <code>parallelTasks=N</code> <em>(Optional)</em>: Override MaxParallelTasks setting (e.g., <code>parallelTasks=4</code>). Value will be clamped between 1 and 10.</li>
+                    <li><strong>Settings Overrides:</strong> <em>(Optional)</em> e.g., <code>googleDriveFolderId=ID</code>, <code>localTempWorkPath="D:\Temp"</code>, <code>verbose=false</code>, <code>backupCycleHours=24</code>, etc.</li>
+                </ul>
+
+                <h3>Conditional Execution (<code>runIfDue</code>)</h3>
+                <p>Checks <code>LastSuccessfulBackupUtc</code> and <code>BackupCycleHours</code> in the used settings file. Skips backup if not due (exit code 0). Updates timestamp on successful completion.</p>
+
+                <h3>Settings Precedence</h3>
+                <ol>
+                    <li>Command-line overrides (<code>verbose=false</code>, <code>parallelTasks=2</code>)</li>
+                    <li>Settings from <code>_restore_state.json</code> (Resume Restore only)</li>
+                    <li>Settings from file via <code>settings=</code></li>
+                    <li>Settings from default <code>app_settings.json</code></li>
+                    <li>Built-in application defaults</li>
+                </ol>
+
+                <h3>Exit Codes</h3>
+                <ul><li><code>0</code>: Success / Skipped (runIfDue)</li><li><code>1</code>: Error</li><li><code>2</code>: Cancelled</li></ul>
+
+                <h3>Command-Line Examples</h3>
+                <ul>
+                    <li><code>GoogleDriveZipBackupTool.exe backup runIfDue=true parallelTasks=4</code></li>
+                    <li><code>GoogleDriveZipBackupTool.exe restore input="archive.zip" parallelTasks=2</code></li>
+                    <li><code>GoogleDriveZipBackupTool.exe action=resume-restore resume="C:\Temp\restore_xyz" parallelTasks=3</code></li>
+                    <li><code>GoogleDriveZipBackupTool.exe repair input="Damaged.zip" settings="repair.json" parallelTasks=1</code></li>
+                </ul>
+            </section>
+
+            <section>
+                <h2 id="en-notes">8. Important Notes & Best Practices</h2>
+                <ul>
+                    <li><strong><code>client_secrets.json</code> Security:</strong> Keep this file secure.</li>
+                    <li><strong>Backup Storage Strategy:</strong> Use the 3-2-1 rule (3 copies, 2 media, 1 offsite). Don't rely only on local backups.</li>
+                    <li><strong>Incremental Backup Limitations:</strong> Handles additions/modifications well. Complex moves/renames might cause extra downloads. Periodic full backups are wise.</li>
+                    <li><strong>API Rate Limits & Parallelism:</strong> <span class="updated-feature">(Updated)</span> Google Drive enforces usage limits. High values for <code>MaxParallelTasks</code> increase the chance of hitting these limits, which might cause temporary errors (though the tool retries). If persistent rate limit errors occur, reduce the number of parallel tasks. Also consider local CPU, memory, and network bandwidth when setting this value.</li>
+                    <li><strong>Logging:</strong> Check the <code>logs</code> subdirectory for detailed error messages (DEBUG level).</li>
+                    <li><strong>Temp Directory Space:</strong> Ensure sufficient free space, especially for restore/repair.</li>
+                    <li><strong>Restore State Files:</strong> The temporary folder (e.g., <code>C:\GoogleDriveTemp\restore_extract_...</code>) containing <code>_restore_state.json</code> is crucial for resuming. Do not delete it if a restore fails/is cancelled and you might want to resume.</li>
+                    <li><strong>Exit Codes (Scripting):</strong> Check exit codes for success (<code>0</code>) in scripts.</li>
+                    <li><strong>Verify Backups:</strong> Periodically test restores or manually inspect archives.</li>
+                    <li><strong>Timestamp Management:</strong> Interactive reminder (Option 9) checks last backup time from settings/legacy status file. CLI <code>runIfDue</code> uses only the timestamp within the specific settings file being used for that run.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2 id="en-troubleshooting">9. Troubleshooting</h2>
+                <ul>
+                    <li><strong>Authentication Failed:</strong> Check <code>client_secrets.json</code> (name, location, content, type: Desktop app), Drive API enabled, try deleting <code>.credentials</code> folder and re-auth.</li>
+                    <li><strong>Backup/Restore/Repair Fails:</strong> Check logs, path permissions, Drive IDs, disk space, internet connection.</li>
+                    <li><strong>Resume Restore Fails:</strong> Check temp folder path, presence/validity of <code>_manifest.json</code> and <code>_restore_state.json</code>.</li>
+                    <li><span class="new-feature">(New)</span> <strong>Slow Performance / Rate Limit Errors:</strong> Try reducing the <code>MaxParallelTasks</code> setting (via interactive menu or <code>parallelTasks=N</code> CLI argument). Check local resource usage (CPU/network).</li>
+                    <li><strong>Repair Doesn't Fix Missing Files:</strong> Manifest might lack file IDs, or files may be deleted/inaccessible on Drive.</li>
+                    <li><strong>Command-Line Argument Issues:</strong> Check syntax (<code>key=value</code>), quotes for spaces, spelling, required args (<code>input</code>, <code>resume</code>).</li>
+                    <li><strong><code>runIfDue</code> Starts Backup Unexpectedly/Not At All:</strong> Check correct settings file, <code>LastSuccessfulBackupUtc</code> timestamp within that file, <code>BackupCycleHours</code> value, system clock accuracy.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2 id="en-disclaimer">10. Disclaimer</h2>
+                <p>This software is provided "as is," without warranty of any kind... Use this tool at your own risk... <strong>Always verify your backups periodically and maintain multiple backup copies in different locations.</strong></p>
+            </section>
+            <!-- VERSION 1.4 ENGLISH CONTENT END -->
+        </div> <!-- End English Content -->
+        <!-- ==================== German Content ==================== -->
+        <div class="lang-content lang-de">
+            <!-- VERSION 1.4 GERMAN CONTENT START -->
+            <h1>Google Drive ZIP Backup Tool – Benutzerhandbuch</h1>
+            <p><strong>Version: 1.4</strong></p>
+
+            <section>
+                <h2 id="de-intro">1. Einleitung</h2>
+                <p>Das Google Drive ZIP Backup Tool ist eine Anwendung, die entwickelt wurde, um bestimmte Ordner aus Ihrem Google Drive-Konto in komprimierte ZIP-Dateien zu sichern, die lokal auf Ihrem Computer gespeichert werden. Es arbeitet in zwei Modi:</p>
+                <ul>
+                    <li><strong>Interaktiver Modus:</strong> Eine menügeführte Oberfläche für Benutzer, die Eingabeaufforderungen und Auswahlmöglichkeiten bevorzugen.</li>
+                    <li><strong>Kommandozeilenmodus:</strong> Ermöglicht die Ausführung von Operationen direkt über Kommandozeilenargumente, geeignet für Skripting und Automatisierung.</li>
+                </ul>
+                <p>Es bietet außerdem Funktionen zur Wiederherstellung von Sicherungen, zur Fortsetzung unterbrochener Wiederherstellungen, zur Reparatur potenziell unvollständiger Archive, zur Verwaltung von Konfigurationsprofilen und <span class="new-feature">(Neu)</span> zur parallelen Durchführung von Dateiübertragungen.</p>
+            </section>
+
+            <section>
+                <h2 id="de-features">2. Funktionen</h2>
+                <ul>
+                    <li><strong>Sicherung (Backup):</strong> Herunterladen von Dateien und Ordnern aus einem bestimmten Google Drive-Ordner.</li>
+                    <li><strong>Komprimierung:</strong> Speichern von Sicherungen lokal als Standard-ZIP-Archive.</li>
+                    <li><strong>Inkrementelle Sicherungen:</strong> Option zum Vergleich mit einer früheren ZIP-Sicherung, um nur neue oder geänderte Dateien herunterzuladen.</li>
+                    <li><strong>Konvertierung von Google Docs:</strong> Konvertiert Google Docs, Tabellen und Präsentationen während der Sicherung in Standardformate.</li>
+                    <li><strong>Wiederherstellung (Restore):</strong> Hochladen von Dateien aus einem Sicherungsarchiv zurück in Google Drive.</li>
+                    <li><strong>Wiederherstellung fortsetzen (Resume Restore):</strong> Fortsetzen eines unterbrochenen Wiederherstellungsvorgangs.</li>
+                    <li><strong>Reparatur (Repair):</strong> Versuch, unvollständige Sicherungsarchive zu reparieren.</li>
+                    <li><span class="new-feature">(Neu)</span> <strong>Parallele Operationen:</strong> Konfigurieren der Anzahl gleichzeitiger Datei-Downloads/-Uploads während Sicherungs-, Wiederherstellungs-, Fortsetzungs- und Reparaturvorgängen, um Übertragungen potenziell zu beschleunigen.</li>
+                    <li><strong>Ausschlüsse:</strong> Angabe relativer Unterordnerpfade zum Ausschließen von Sicherungen.</li>
+                    <li><strong>Konfigurationsprofile:</strong> Speichern und Laden verschiedener Anwendungseinstellungen.</li>
+                    <li><strong>Authentifizierung:</strong> Sichere Authentifizierung mit Ihrem Google-Konto mittels OAuth 2.0.</li>
+                    <li><strong>Kommandozeilenbetrieb:</strong> Nicht-interaktive Ausführung aller Hauptaktionen für Skripting.</li>
+                    <li><strong>Bedingte Sicherung (CLI):</strong> Option, eine Sicherung nur zu starten, wenn ein konfiguriertes Zeitintervall überschritten wurde.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2 id="de-requirements">3. Voraussetzungen</h2>
+                <ul>
+                    <li><strong>Google-Konto:</strong> Standard-Google-Konto oder Google Workspace-Konto.</li>
+                    <li><strong>Google Drive API aktiviert:</strong> Muss in der Google Cloud Console aktiviert sein.</li>
+                    <li><strong>OAuth 2.0-Anmeldedaten (<code>client_secrets.json</code>):</strong> Anmeldedaten für eine <strong>Desktopanwendung</strong> aus der Cloud Console.</li>
+                    <li><strong>.NET Laufzeitumgebung:</strong> Kompatible .NET Runtime (z. B. .NET 6+) muss installiert sein.</li>
+                    <li><strong>Anwendungsdateien:</strong> Kompilierte Anwendung und Abhängigkeiten.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2 id="de-setup">4. Einrichtung & Erster Start</h2>
+                <h3><code>client_secrets.json</code> erhalten</h3>
+                <p>Entscheidender Schritt:</p>
+                <ol>
+                    <li>Zur <a href="https://console.cloud.google.com/" target="_blank" rel="noopener noreferrer">Google Cloud Console</a> gehen.</li>
+                    <li>Projekt erstellen/auswählen.</li>
+                    <li><strong>APIs & Dienste -> Bibliothek</strong> -> "Google Drive API" suchen & <strong>Aktivieren</strong>.</li>
+                    <li><strong>APIs & Dienste -> Anmeldedaten</strong> -> <strong>+ ANMELDEDATEN ERSTELLEN</strong> -> <strong>OAuth-Client-ID</strong>.</li>
+                    <li>Ggf. OAuth-Zustimmungsbildschirm konfigurieren (Typ "Extern", App-Name, E-Mails angeben).</li>
+                    <li>Anwendungstyp <strong>Desktopanwendung</strong> wählen, Namen vergeben.</li>
+                    <li><strong>Erstellen</strong> -> <strong>JSON HERUNTERLADEN</strong>.</li>
+                    <li>Datei exakt <code>client_secrets.json</code> nennen.</li>
+                    <li>Datei ins Verzeichnis der Anwendung kopieren.</li>
+                </ol>
+                <p class="warning">WARNUNG: <code>client_secrets.json</code> sicher behandeln!</p>
+
+                <h3>Erstmalige Authentifizierung</h3>
+                <ol>
+                    <li>Anwendung ausführen.</li>
+                    <li>Browser öffnet Google-Anmeldung.</li>
+                    <li>Mit dem gewünschten Google-Konto anmelden.</li>
+                    <li>Zugriff auf Google Drive erlauben.</li>
+                    <li>Erfolgsmeldung im Browser abwarten.</li>
+                    <li>Token wird sicher gespeichert (<code>%APPDATA%\GoogleDriveZipBackupTool\.credentials</code> o.ä.) und wiederverwendet.</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2 id="de-config">5. Konfiguration (über <code>app_settings.json</code>)</h2>
+                <p>Einstellungen werden in <code>app_settings.json</code> im Anwendungsverzeichnis gespeichert.</p>
+
+                <h3>Zugriff auf Einstellungen (Interaktiv)</h3>
+                <p>Im interaktiven Modus Option <strong>4. Einstellungen konfigurieren</strong> wählen.</p>
+
+                <h3>Einstellungen erklärt</h3>
+                <ol>
+                    <li><strong><code>GoogleDriveFolderId</code></strong>: ID des zu sichernden Google Drive-Ordners. (Erforderlich für Backup)</li>
+                    <li><strong><code>LocalBackupArchivePath</code></strong>: Lokaler Pfad zum Speichern der ZIP-Archive. (Erforderlich für Backup)</li>
+                    <li><strong><code>LocalTempWorkPath</code></strong>: Lokaler Pfad für temporäre Dateien. (Erforderlich für alle Operationen)</li>
+                    <li><strong><code>GoogleDriveRestoreParentId</code></strong>: ID des Google Drive-Zielordners für die Wiederherstellung. (Erforderlich für neue Wiederherstellung) <span class="note">(Bei Fortsetzung wird die ID aus der Statusdatei verwendet.)</span></li>
+                    <li><strong><code>BackupCycleHours</code></strong>: Schwellenwert (Stunden) für Erinnerung und bedingte Ausführung (CLI). (Standard: 168)</li>
+                    <li><strong><code>ShowVerboseProgress</code></strong>: Detaillierte (<code>true</code>) oder zusammenfassende (<code>false</code>) Fortschrittsanzeige. (Standard: true)</li>
+                    <li><span class="new-feature">(Neu)</span> <strong><code>MaxParallelTasks</code></strong>: Maximale Anzahl gleichzeitiger Datei-Downloads/-Uploads. (Standard: 1, Min: 1, Max intern auf 10 begrenzt). Höhere Werte können Geschwindigkeit erhöhen, aber Ressourcenverbrauch und API-Limit-Risiko steigern.</li>
+                    <li><strong><code>ExcludedRelativePaths</code></strong>: (Verwaltet über Option 6) Liste relativer Pfade zum Ausschließen von Backups.</li>
+                    <li><strong><code>LastSuccessfulBackupUtc</code></strong>: (Nicht bearbeitbar) UTC-Zeitstempel des letzten erfolgreichen CLI-Backups mit dieser Einstellungsdatei. Für <code>runIfDue</code>.</li>
+                </ol>
+                <p>Im Einstellungsmenü Nummer (1-7) wählen, Wert eingeben oder Enter drücken. <strong>S</strong> zum Speichern, <strong>C</strong> zum Abbrechen.</p>
+            </section>
+
+            <section>
+                <h2 id="de-interactive">6. Verwendung des Tools – Interaktiver Modus</h2>
+                <p>Verwendung ohne Kommandozeilenargumente.</p>
+
+                <h3>1. Neues Sicherungsarchiv erstellen (.zip)</h3>
+                <ul><li><strong>Zweck:</strong> Sichert konfigurierten Ordner.</li><li><strong>Erfordert:</strong> <code>GoogleDriveFolderId</code>, <code>LocalBackupArchivePath</code>, <code>LocalTempWorkPath</code>.</li><li><strong>Prozess:</strong> Option wählen, optional Pfad zu vorherigem ZIP für inkrementelle Sicherung angeben. Dateien werden mit bis zu <code>MaxParallelTasks</code> gleichzeitig kopiert/heruntergeladen.</li></ul>
+
+                <h3>2. Aus Sicherungsarchiv wiederherstellen (.zip)</h3>
+                <ul><li><strong>Zweck:</strong> Lädt Dateien aus ZIP zurück in Drive.</li><li><strong>Erfordert:</strong> <code>LocalTempWorkPath</code>, <code>GoogleDriveRestoreParentId</code>.</li><li><strong>Prozess:</strong> Option wählen, ZIP-Pfad angeben. Extrahiert in Temp-Ordner (Pfad merken!), erstellt Statusdatei, erstellt Ordner in Drive (sequenziell), lädt Dateien mit bis zu <code>MaxParallelTasks</code> gleichzeitig hoch. Temp-Ordner wird bei Erfolg gelöscht, bei Fehler/Abbruch behalten.</li></ul>
+
+                <h3>3. Unterbrochene Wiederherstellung fortsetzen...</h3>
+                <ul><li><strong>Zweck:</strong> Setzt unterbrochene Wiederherstellung fort.</li><li><strong>Erfordert:</strong> Temporärer Ordner der vorherigen Wiederherstellung (mit <code>_manifest.json</code>, <code>_restore_state.json</code>).</li><li><strong>Prozess:</strong> Option wählen, Temp-Ordnerpfad angeben. Lädt Status, ermittelt fehlende Dateien, lädt diese mit bis zu <code>MaxParallelTasks</code> gleichzeitig hoch. Temp-Ordner wird bei Erfolg gelöscht, bei Fehler/Abbruch behalten.</li></ul>
+
+                <h3>4. Einstellungen konfigurieren</h3>
+                <ul><li><strong>Zweck:</strong> Ändern der Einstellungen (inkl. <code>MaxParallelTasks</code>).</li><li>Siehe: <a href="#de-config">Abschnitt 5. Konfiguration</a>.</li></ul>
+
+                <h3>5. Sicherungsarchiv reparieren (.zip)</h3>
+                <ul><li><strong>Zweck:</strong> Repariert unvollständige Archive.</li><li><strong>Erfordert:</strong> <code>LocalTempWorkPath</code>.</li><li><strong>Prozess:</strong> Option wählen, ZIP-Pfad angeben. Extrahiert, prüft Manifest, versucht fehlende Dateien (mit ID) mit bis zu <code>MaxParallelTasks</code> gleichzeitig neu herunterzuladen, erstellt bei Erfolg neues `_REPAIRED_`-Archiv.</li></ul>
+
+                <h3>6. Ausschlüsse verwalten (Unterordner)</h3>
+                <ul><li><strong>Zweck:</strong> Unterordner von Sicherungen ausschließen.</li><li><strong>Prozess:</strong> Separates Menü zum Hinzufügen/Entfernen/Löschen/Speichern/Verwerfen relativer Pfade (z. B. <code>/Temp</code>).</li></ul>
+
+                <h3>7. Einstellungsprofil speichern...</h3>
+                <ul><li><strong>Zweck:</strong> Aktuelle Einstellungen in separater Datei speichern.</li></ul>
+
+                <h3>8. Einstellungsprofil laden...</h3>
+                <ul><li><strong>Zweck:</strong> Einstellungen aus Profildatei laden, aktuelle ersetzen und in <code>app_settings.json</code> speichern (nach Bestätigung).</li></ul>
+
+                <h3>9. Sicherungsstatus-Erinnerung prüfen</h3>
+                <ul><li><strong>Zweck:</strong> Prüft Zeit der letzten Sicherung gegen konfigurierten Zyklus.</li></ul>
+
+                <h3>10. Beenden</h3>
+                <p>Schließt die Anwendung.</p>
+            </section>
+
+            <section>
+                <h2 id="de-cli">7. Verwendung des Tools – Kommandozeilenmodus</h2>
+                <h3>Übersicht</h3>
+                <p>Operationen nicht-interaktiv via Kommandozeilenargumente (<code>schlüssel=wert</code>) ausführen.</p>
+
+                <h3>Syntax</h3>
+                <pre><code class="language-bash">GoogleDriveZipBackupTool.exe <aktion> [argumente...]
+dotnet GoogleDriveZipBackupTool.dll <aktion> [argumente...]</code></pre>
+
+                <h3>Erforderliches Argument: <code>action</code></h3>
+                <ul><li><code>backup</code> | <code>restore</code> | <code>repair</code> | <code>resume-restore</code></li></ul>
+
+                <h3>Optionale/Erforderliche Argumente (Kontextabhängig)</h3>
+                <ul>
+                    <li><code>settings=pfad/zu/config.settings.json</code> <em>(Optional)</em>: Spezifische Einstellungsdatei verwenden.</li>
+                    <li><code>input=pfad/zu/archiv.zip</code> <strong>(Erforderlich für <code>restore</code>, <code>repair</code>)</strong></li>
+                    <li><code>resume=pfad/zu/temp_restore_ordner</code> <strong>(Erforderlich für <code>resume-restore</code>)</strong></li>
+                    <li><code>previous=pfad/zu/vorherigem_archiv.zip</code> <em>(Optional für <code>backup</code>)</em></li>
+                    <li><code>runIfDue=true</code> <em>(Optional für <code>backup</code>)</em>: Nur ausführen, wenn Zyklus überschritten.</li>
+                    <li><span class="new-feature">(Neu)</span> <code>parallelTasks=N</code> <em>(Optional)</em>: Überschreibt MaxParallelTasks (z. B. <code>parallelTasks=4</code>). Wert wird auf 1-10 begrenzt.</li>
+                    <li><strong>Einstellungsüberschreibungen:</strong> <em>(Optional)</em> z. B. <code>googleDriveFolderId=ID</code>, <code>localTempWorkPath="D:\Temp"</code>, <code>verbose=false</code>, etc.</li>
+                </ul>
+
+                <h3>Bedingte Ausführung (<code>runIfDue</code>)</h3>
+                <p>Prüft <code>LastSuccessfulBackupUtc</code> und <code>BackupCycleHours</code> in der verwendeten Einstellungsdatei. Überspringt Backup, wenn nicht fällig (Exit-Code 0). Aktualisiert Zeitstempel bei Erfolg.</p>
+
+                <h3>Einstellungspriorität</h3>
+                <ol>
+                    <li>Kommandozeilenüberschreibungen (<code>verbose=false</code>, <code>parallelTasks=2</code>)</li>
+                    <li>Einstellungen aus <code>_restore_state.json</code> (Nur bei Resume Restore)</li>
+                    <li>Einstellungen aus Datei via <code>settings=</code></li>
+                    <li>Einstellungen aus Standard-<code>app_settings.json</code></li>
+                    <li>Eingebaute Anwendungsstandardwerte</li>
+                </ol>
+
+                <h3>Exit-Codes (Rückgabewerte)</h3>
+                <ul><li><code>0</code>: Erfolg / Übersprungen (runIfDue)</li><li><code>1</code>: Fehler</li><li><code>2</code>: Abgebrochen</li></ul>
+
+                <h3>Kommandozeilenbeispiele</h3>
+                <ul>
+                    <li><code>GoogleDriveZipBackupTool.exe backup runIfDue=true parallelTasks=4</code></li>
+                    <li><code>GoogleDriveZipBackupTool.exe restore input="archiv.zip" parallelTasks=2</code></li>
+                    <li><code>GoogleDriveZipBackupTool.exe action=resume-restore resume="C:\Temp\restore_xyz" parallelTasks=3</code></li>
+                    <li><code>GoogleDriveZipBackupTool.exe repair input="Damaged.zip" settings="repair.json" parallelTasks=1</code></li>
+                </ul>
+            </section>
+
+            <section>
+                <h2 id="de-notes">8. Wichtige Hinweise & Empfehlungen</h2>
+                <ul>
+                    <li><strong>Sicherheit von <code>client_secrets.json</code>:</strong> Sicher aufbewahren.</li>
+                    <li><strong>Sicherungsstrategie:</strong> 3-2-1-Regel anwenden (3 Kopien, 2 Medien, 1 extern). Nicht nur auf lokale Backups verlassen.</li>
+                    <li><strong>Inkrementelle Sicherungen:</strong> Gut für neue/geänderte Dateien. Komplexe Änderungen können unnötige Downloads verursachen. Periodische Vollsicherungen sind ratsam.</li>
+                    <li><strong>API-Limits & Parallelität:</strong> <span class="updated-feature">(Aktualisiert)</span> Google Drive hat Nutzungslimits. Hohe <code>MaxParallelTasks</code>-Werte erhöhen das Risiko, diese zu erreichen (temporäre Fehler, Tool versucht Wiederholung). Bei dauerhaften Limit-Fehlern Parallelität reduzieren. Lokale CPU-/Netzwerkressourcen berücksichtigen.</li>
+                    <li><strong>Protokollierung:</strong> <code>logs</code>-Verzeichnis auf detaillierte Fehlermeldungen prüfen (DEBUG-Level).</li>
+                    <li><strong>Temp-Verzeichnis:</strong> Ausreichend Speicherplatz sicherstellen, besonders für Restore/Repair.</li>
+                    <li><strong>Wiederherstellungs-Statusdateien:</strong> Der temporäre Ordner (z. B. <code>C:\GoogleDriveTemp\restore_extract_...</code>) mit <code>_restore_state.json</code> ist entscheidend für die Fortsetzung. Nicht löschen, wenn Wiederherstellung fehlschlägt/abbricht und Fortsetzung gewünscht ist.</li>
+                    <li><strong>Exit-Codes (Skripting):</strong> Erfolg (<code>0</code>) in Skripten prüfen.</li>
+                    <li><strong>Sicherungen überprüfen:</strong> Periodisch testen (Test-Restore, manuelle Prüfung).</li>
+                    <li><strong>Zeitstempel-Verwaltung:</strong> Interaktive Erinnerung (Option 9) prüft Zeit aus Einstellungen/Statusdatei. CLI <code>runIfDue</code> nutzt nur Zeitstempel aus der für den Lauf verwendeten Einstellungsdatei.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2 id="de-troubleshooting">9. Fehlerbehebung</h2>
+                <ul>
+                    <li><strong>Authentifizierung fehlgeschlagen:</strong> <code>client_secrets.json</code> prüfen (Name, Ort, Inhalt, Typ: Desktop), Drive API aktiviert?, <code>.credentials</code>-Ordner löschen & neu authentifizieren.</li>
+                    <li><strong>Sicherung/Wiederherstellung/Reparatur fehlgeschlagen:</strong> Logs prüfen, Pfadberechtigungen, Drive IDs, Speicherplatz, Internetverbindung.</li>
+                    <li><strong>Wiederherstellung fortsetzen fehlgeschlagen:</strong> Temp-Ordnerpfad prüfen, Existenz/Gültigkeit von <code>_manifest.json</code> und <code>_restore_state.json</code>.</li>
+                    <li><span class="new-feature">(Neu)</span> <strong>Langsame Leistung / Rate-Limit-Fehler:</strong> <code>MaxParallelTasks</code> reduzieren (interaktiv oder CLI). Lokale Ressourcen prüfen.</li>
+                    <li><strong>Reparatur behebt fehlende Dateien nicht:</strong> Manifest fehlt Datei-IDs, oder Dateien existieren nicht mehr/sind unzugänglich in Drive.</li>
+                    <li><strong>Kommandozeilenargument-Probleme:</strong> Syntax (<code>key=value</code>), Anführungszeichen bei Leerzeichen, Rechtschreibung, erforderliche Argumente (<code>input</code>, <code>resume</code>).</li>
+                    <li><strong><code>runIfDue</code> startet unerwartet/nicht:</strong> Richtige Einstellungsdatei? Zeitstempel <code>LastSuccessfulBackupUtc</code> darin prüfen, <code>BackupCycleHours</code>-Wert, Systemuhrzeit.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2 id="de-disclaimer">10. Haftungsausschluss</h2>
+                <p>Diese Software wird "wie besehen" ("as is") zur Verfügung gestellt, ohne jegliche Gewährleistung... Nutzung auf eigene Gefahr... <strong>Überprüfen Sie Ihre Sicherungen immer regelmäßig und bewahren Sie mehrere Sicherungskopien an verschiedenen Orten auf.</strong></p>
+            </section>
+            <!-- VERSION 1.4 GERMAN CONTENT END -->
+        </div> <!-- End German Content -->
+
+    </main> <!-- End Main Content -->
+    <!-- External JavaScript is linked in the <head> with defer -->
+
+</body>
+</html>

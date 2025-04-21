@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoogleDriveBackup.Core Namespace Documentation</title>
+    <style>
+        /* Basic Styling */
+        body {
+            font-family: sans-serif;
+            line-height: 1.6;
+            margin: 0; /* Remove default margin */
+            padding-left: 20px; /* Add padding to prevent overlap with closed menu */
+            padding-top: 60px; /* Add padding to prevent overlap with fixed header/button */
+            transition: padding-left 0.3s ease-in-out; /* Smooth transition when menu opens */
+        }
+
+            body.menu-body-pushed {
+                padding-left: 290px; /* Adjust based on menu width + some space */
+            }
+
+        h1, h2, h3 {
+            color: #333;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 5px;
+        }
+
+        h1 {
+            font-size: 2em;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            margin-top: 30px;
+        }
+
+        h3 {
+            font-size: 1.2em;
+            margin-top: 20px;
+        }
+
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 6px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: monospace;
+            word-break: break-all; /* Prevent long code lines from breaking layout */
+        }
+
+        pre {
+            background-color: #f4f4f4;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            overflow-x: auto;
+        }
+
+            pre code {
+                background-color: transparent;
+                border: none;
+                padding: 0;
+                word-break: normal;
+            }
+
+        .namespace {
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        .class {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .method {
+            color: #dc3545;
+            font-weight: bold;
+        }
+
+        .property {
+            color: #ffc107;
+            font-weight: bold;
+        }
+
+        .record {
+            color: #17a2b8;
+            font-weight: bold;
+        }
+
+        .enum {
+            color: #6f42c1;
+            font-weight: bold;
+        }
+
+        .parameter {
+            font-style: italic;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 5px solid #ffeeba;
+            padding: 10px;
+            margin: 15px 0;
+        }
+        /* Scrollspy highlight (optional but nice) */
+        .nav-link.active {
+            font-weight: bold;
+            color: #0056b3;
+        }
+
+        /* --- Hamburger Menu Styles --- */
+        #menu-toggle {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 1001; /* Above menu */
+            background: #333;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+            #menu-toggle .bar {
+                display: block;
+                width: 25px;
+                height: 3px;
+                background-color: white;
+                margin: 5px 0;
+                transition: 0.3s;
+            }
+
+            /* Style for 'X' icon when menu is open */
+            #menu-toggle.open .bar:nth-child(1) {
+                transform: translateY(8px) rotate(45deg);
+            }
+
+            #menu-toggle.open .bar:nth-child(2) {
+                opacity: 0;
+            }
+
+            #menu-toggle.open .bar:nth-child(3) {
+                transform: translateY(-8px) rotate(-45deg);
+            }
+
+
+        #main-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 270px; /* Menu width */
+            height: 100vh; /* Full height */
+            background-color: #f8f9fa;
+            border-right: 1px solid #dee2e6;
+            padding: 60px 15px 15px 15px; /* Top padding to clear button */
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            transform: translateX(-100%); /* Initially hidden */
+            transition: transform 0.3s ease-in-out;
+            z-index: 1000;
+            overflow-y: auto; /* Enable scrolling for long menus */
+            box-sizing: border-box;
+        }
+
+            #main-nav.open {
+                transform: translateX(0); /* Slide in */
+            }
+
+            #main-nav ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            #main-nav li {
+                margin-bottom: 5px;
+            }
+
+            #main-nav a {
+                display: block;
+                padding: 6px 10px;
+                color: #007bff;
+                text-decoration: none;
+                border-radius: 4px;
+                transition: background-color 0.2s;
+            }
+
+                #main-nav a:hover,
+                #main-nav a:focus {
+                    background-color: #e9ecef;
+                    color: #0056b3;
+                }
+
+            #main-nav .sub-menu {
+                padding-left: 20px;
+                margin-top: 5px;
+            }
+
+                #main-nav .sub-menu a {
+                    font-size: 0.9em;
+                    padding: 4px 8px;
+                }
+
+            #main-nav .nav-header {
+                font-weight: bold;
+                color: #6c757d;
+                margin-top: 15px;
+                margin-bottom: 5px;
+                padding-left: 10px;
+                font-size: 0.9em;
+                text-transform: uppercase;
+            }
+            /* Style for the main namespace link */
+            #main-nav > ul > li:first-child > a {
+                font-weight: bold;
+                font-size: 1.1em;
+                margin-bottom: 10px;
+            }
+    </style>
+</head>
+<body>
+
+    <!-- Hamburger Button -->
+    <button id="menu-toggle" aria-label="Toggle navigation menu">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </button>
+
+    <!-- Navigation Panel -->
+    <nav id="main-nav">
+        <ul>
+            <li><a href="#top" class="nav-link">GoogleDriveBackup.Core</a></li>
+
+            <li><div class="nav-header">Classes</div></li>
+            <li>
+                <a href="#BackupManager" class="nav-link">BackupManager</a>
+                <ul class="sub-menu">
+                    <li><a href="#BackupManager_StartBackupAsync" class="nav-link">StartBackupAsync()</a></li>
+                    <li><a href="#BackupManager_DriveItemInfo" class="nav-link">DriveItemInfo (Record)</a></li>
+                    <!-- Add other key public members if needed -->
+                </ul>
+            </li>
+            <li>
+                <a href="#RestoreManager" class="nav-link">RestoreManager</a>
+                <ul class="sub-menu">
+                    <li><a href="#RestoreManager_StartRestoreAsync" class="nav-link">StartRestoreAsync()</a></li>
+                    <li><a href="#RestoreManager_RestoreState" class="nav-link">RestoreState (Class)</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#RepairManager" class="nav-link">RepairManager</a>
+                <ul class="sub-menu">
+                    <li><a href="#RepairManager_RepairBackupAsync" class="nav-link">RepairBackupAsync()</a></li>
+                    <li><a href="#RepairManager_FileManifestEntry" class="nav-link">FileManifestEntry (Record)</a></li>
+                    <li><a href="#RepairManager_DiscManifest" class="nav-link">DiscManifest (Class)</a></li>
+                    <li><a href="#RepairManager_LoadManifest" class="nav-link">LoadManifestFromDirectoryAsync()</a></li>
+                    <li><a href="#RepairManager_ExtractFileId" class="nav-link">ExtractFileIdFromArchivePath()</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#SettingsManager" class="nav-link">SettingsManager</a>
+                <ul class="sub-menu">
+                    <li><a href="#SettingsManager_LoadSettings" class="nav-link">LoadSettings()</a></li>
+                    <li><a href="#SettingsManager_SaveSettings" class="nav-link">SaveSettings()</a></li>
+                    <li><a href="#SettingsManager_LoadFromPath" class="nav-link">LoadSettingsFromPath()</a></li>
+                    <li><a href="#SettingsManager_SaveToPath" class="nav-link">SaveSettingsToPath()</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#AppSettings" class="nav-link">AppSettings</a>
+                <ul class="sub-menu">
+                    <li><a href="#AppSettings_Properties" class="nav-link">Properties</a></li>
+                    <li><a href="#AppSettings_Helpers" class="nav-link">Helper Methods</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#StatusManager" class="nav-link">StatusManager</a>
+                <ul class="sub-menu">
+                    <li><a href="#StatusManager_LoadStatus" class="nav-link">LoadBackupStatus()</a></li>
+                    <li><a href="#StatusManager_SaveStatus" class="nav-link">SaveBackupStatus()</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#BackupStatus" class="nav-link">BackupStatus</a>
+                <ul class="sub-menu">
+                    <li><a href="#BackupStatus_Property" class="nav-link">Property</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#GoogleDriveServiceClass" class="nav-link">GoogleDriveService</a>
+                <ul class="sub-menu">
+                    <li><a href="#GoogleDriveService_AuthenticateAsync" class="nav-link">AuthenticateAsync()</a></li>
+                </ul>
+            </li>
+
+            <li><div class="nav-header">Records</div></li>
+            <li>
+                <a href="#ProgressAndResults" class="nav-link">Progress & Results</a>
+                <ul class="sub-menu">
+                    <li><a href="#Record_BaseProgressInfo" class="nav-link">BaseProgressInfo</a></li>
+                    <li><a href="#Record_BackupProgressReport" class="nav-link">BackupProgressReport</a></li>
+                    <li><a href="#Record_BackupResult" class="nav-link">BackupResult</a></li>
+                    <li><a href="#Record_RestoreResult" class="nav-link">RestoreResult</a></li>
+                    <li><a href="#Record_RepairResult" class="nav-link">RepairResult</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main id="main-content">
+
+        <h1 id="top">Namespace <span class="namespace">GoogleDriveBackup.Core</span></h1>
+        <p>
+            The <span class="namespace">GoogleDriveBackup.Core</span> namespace contains the core logic for the Google Drive Backup application. It includes classes for managing backup, restore, and repair operations, handling application settings and status, authenticating with Google Drive, and defining data structures for progress reporting and operation results.
+        </p>
+        <p>
+            This namespace facilitates interaction with the Google Drive API v3 to perform tasks like listing files, downloading/exporting Google Docs, uploading files, handling incremental backups by comparing modification times, managing parallelism for performance, and maintaining state for resumable restores.
+        </p>
+
+        <!-- ===================================================================== -->
+        <!-- Key Classes and Records                                                -->
+        <!-- ===================================================================== -->
+
+        <h2 id="KeyClasses">Key Classes and Records</h2>
+
+        <!-- --------------------------------------------------------------------- -->
+        <!-- BackupManager                                                          -->
+        <!-- --------------------------------------------------------------------- -->
+        <section id="BackupManager">
+            <h2><span class="class">BackupManager</span> Class</h2>
+            <p>
+                Handles the primary backup operations. It lists files and folders recursively from a specified Google Drive folder, determines which files need to be downloaded (new or changed) or copied (unchanged from a previous backup), performs downloads (including exporting Google Docs to standard formats), and creates a compressed ZIP archive containing the backed-up files and a manifest file. Supports incremental backups and parallel downloads/copies.
+            </p>
+            <h3 id="BackupManager_Members">Key Public Members</h3>
+            <ul>
+                <li id="BackupManager_StartBackupAsync"><span class="method">StartBackupAsync(string googleDriveFolderId, string? previousBackupArchivePath = null, IProgress<BackupProgressReport>? progress = null, CancellationToken cancellationToken = default)</span>: Initiates the backup process.</li>
+                <li id="BackupManager_DriveItemInfo"><span class="record">DriveItemInfo</span> (Public Record): Represents information about a single item (file or folder) retrieved from Google Drive.</li>
+            </ul>
+            <h3>Dependencies</h3>
+            <ul>
+                <li>Requires an authenticated <code class="class">Google.Apis.Drive.v3.DriveService</code> instance.</li>
+                <li>Requires an <code class="class">AppSettings</code> instance for configuration (paths, exclusions, parallelism).</li>
+            </ul>
+            <h3>Code Sample: Performing a Backup</h3>
+            <pre><code class="language-csharp">
+// (Code sample remains the same as previous version)
+using GoogleDriveBackup.Core;
+using Google.Apis.Drive.v3;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+
+public class BackupExample
+{
+    public async Task RunBackupAsync(DriveService driveService, AppSettings settings)
+    {
+        // Assumes driveService is authenticated and settings are loaded
+        var backupManager = new BackupManager(driveService, settings);
+
+        string googleDriveFolderId = settings.GoogleDriveFolderId ?? "YOUR_GOOGLE_DRIVE_FOLDER_ID";
+        string? previousBackupPath = null; // Set to path of last backup ZIP for incremental
+
+        // Optional: Progress reporting
+        var progress = new Progress<BackupProgressReport>(report =>
+        {
+            Console.WriteLine($"[{report.ProcessedItems}/{report.TotalItemsToProcess}] {report.CurrentAction}: {report.CurrentFilePath ?? report.CurrentArchivePath ?? ""}");
+        });
+
+        var cancellationTokenSource = new CancellationTokenSource();
+        // cancellationTokenSource.CancelAfter(TimeSpan.FromMinutes(30)); // Optional timeout
+
+        Console.WriteLine($"Starting backup for folder: {googleDriveFolderId}");
+        BackupResult result = await backupManager.StartBackupAsync(
+            googleDriveFolderId,
+            previousBackupPath,
+            progress,
+            cancellationTokenSource.Token);
+
+        if (result.Cancelled)
+        {
+            Console.WriteLine("Backup was cancelled.");
+        }
+        else if (result.Success)
+        {
+            Console.WriteLine($"Backup completed successfully in {result.Duration.TotalMinutes:F2} minutes.");
+            Console.WriteLine($"Archive created at: {result.FinalArchivePath}");
+            Console.WriteLine($"Files Listed: {result.FilesListed}, Copied: {result.FilesCopied}, Downloaded: {result.SuccessfulDownloads}");
+            Console.WriteLine($"Skipped (Unsupported): {result.UnsupportedSkipped}, Copy Errors: {result.CopyErrors}, Download Failures: {result.FailedDownloads}");
+            // Optionally save the successful backup timestamp
+            // StatusManager.SaveBackupStatus(new BackupStatus { LastSuccessfulBackupTimestamp = DateTime.UtcNow });
+        }
+        else
+        {
+            Console.WriteLine($"Backup failed after {result.Duration.TotalMinutes:F2} minutes.");
+            // Check result properties for details (FailedDownloads, CopyErrors)
+        }
+    }
+}
+            </code></pre>
+        </section>
+
+        <!-- --------------------------------------------------------------------- -->
+        <!-- RestoreManager                                                         -->
+        <!-- --------------------------------------------------------------------- -->
+        <section id="RestoreManager">
+            <h2><span class="class">RestoreManager</span> Class</h2>
+            <p>
+                Handles restoring files from a backup archive back into Google Drive. It reads the manifest file from the archive, recreates the folder structure in Google Drive under a specified parent folder, and uploads the files. Supports parallel uploads and can resume an interrupted restore process if the temporary extraction folder is provided.
+            </p>
+            <h3 id="RestoreManager_Members">Key Public Members</h3>
+            <ul>
+                <li id="RestoreManager_StartRestoreAsync"><span class="method">StartRestoreAsync(string? backupArchivePath, string? resumeFolderPath, IProgress<BackupProgressReport>? progress = null, CancellationToken cancellationToken = default)</span>: Initiates the restore process, either fresh from an archive or resuming from a folder.</li>
+                <li id="RestoreManager_RestoreState"><span class="class">RestoreState</span> (Public Class): Contains state information for resumable restores, including settings used and paths of already completed files.</li>
+            </ul>
+            <h3>Dependencies</h3>
+            <ul>
+                <li>Requires an authenticated <code class="class">Google.Apis.Drive.v3.DriveService</code> instance.</li>
+                <li>Requires an <code class="class">AppSettings</code> instance for configuration (temp path, restore parent ID, parallelism). Note: On resume, settings stored in the <code class="class">RestoreState</code> file are used.</li>
+            </ul>
+            <h3>Code Sample: Restoring a Backup</h3>
+            <pre><code class="language-csharp">
+// (Code sample remains the same as previous version)
+using GoogleDriveBackup.Core;
+using Google.Apis.Drive.v3;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+
+public class RestoreExample
+{
+    public async Task RunRestoreAsync(DriveService driveService, AppSettings settings)
+    {
+        // Assumes driveService is authenticated and settings are loaded
+        var restoreManager = new RestoreManager(driveService, settings);
+
+        string backupArchivePath = "path/to/GDriveBackup_YYYYMMDD_HHMMSS.zip";
+        string? resumeFolderPath = null; // Set to path of temp extract folder to resume
+
+        var progress = new Progress<BackupProgressReport>(report =>
+        {
+            Console.WriteLine($"[{report.ProcessedItems}/{report.TotalItemsToProcess}] {report.CurrentAction}: {report.CurrentFilePath ?? report.CurrentArchivePath ?? ""}");
+        });
+
+        var cancellationTokenSource = new CancellationTokenSource();
+
+        Console.WriteLine($"Starting restore from: {(resumeFolderPath ?? backupArchivePath)}");
+        RestoreResult result = await restoreManager.StartRestoreAsync(
+            backupArchivePath,
+            resumeFolderPath,
+            progress,
+            cancellationTokenSource.Token);
+
+        if (result.Cancelled)
+        {
+            Console.WriteLine("Restore was cancelled.");
+        }
+        else if (result.Success)
+        {
+            Console.WriteLine($"Restore completed successfully in {result.Duration.TotalMinutes:F2} minutes.");
+            Console.WriteLine($"Files Processed: {result.FilesProcessed}, Uploaded: {result.FilesUploaded}, Skipped/Failed: {result.FilesSkippedOrFailed}");
+        }
+        else
+        {
+            Console.WriteLine($"Restore failed or finished with issues after {result.Duration.TotalMinutes:F2} minutes.");
+             Console.WriteLine($"Files Processed: {result.FilesProcessed}, Uploaded: {result.FilesUploaded}, Skipped/Failed: {result.FilesSkippedOrFailed}");
+             Console.WriteLine("Check logs and potentially resume from the temporary folder if applicable.");
+        }
+    }
+}
+            </code></pre>
+        </section>
+
+        <!-- --------------------------------------------------------------------- -->
+        <!-- RepairManager                                                          -->
+        <!-- --------------------------------------------------------------------- -->
+        <section id="RepairManager">
+            <h2><span class="class">RepairManager</span> Class</h2>
+            <p>
+                Attempts to repair a damaged or incomplete backup archive. It extracts the archive, reads the manifest, checks for missing files within the extracted contents, and tries to redownload the missing files from Google Drive using the File ID stored in the archive path within the manifest. Creates a new, repaired archive if successful. Supports parallel downloads for missing files.
+            </p>
+            <h3 id="RepairManager_Members">Key Public Members</h3>
+            <ul>
+                <li id="RepairManager_RepairBackupAsync"><span class="method">RepairBackupAsync(string damagedBackupArchivePath, IProgress<BackupProgressReport>? progress = null, CancellationToken cancellationToken = default)</span>: Initiates the repair process.</li>
+                <li id="RepairManager_FileManifestEntry"><span class="record">FileManifestEntry</span> (Public Record): Defines the structure of an entry within the manifest file.</li>
+                <li id="RepairManager_DiscManifest"><span class="class">DiscManifest</span> (Public Class): Represents the overall structure of the `_manifest.json` file.</li>
+                <li id="RepairManager_LoadManifest"><span class="method">LoadManifestFromDirectoryAsync(string directoryPath)</span>: Utility to load a manifest from a directory (used internally and by `BackupManager`).</li>
+                <li id="RepairManager_ExtractFileId"><span class="method">ExtractFileIdFromArchivePath(string? archivePath)</span>: Utility to extract the Google Drive File ID from the archive path (used internally and by `BackupManager`).</li>
+            </ul>
+            <h3>Dependencies</h3>
+            <ul>
+                <li>Requires an authenticated <code class="class">Google.Apis.Drive.v3.DriveService</code> instance.</li>
+                <li>Requires an <code class="class">AppSettings</code> instance for configuration (temp path, parallelism).</li>
+                <li><strong class="note">Important:</strong> Requires an instance of <code class="class">BackupManager</code> to leverage its file downloading logic.</li>
+            </ul>
+            <h3>Code Sample: Repairing a Backup</h3>
+            <pre><code class="language-csharp">
+// (Code sample remains the same as previous version)
+using GoogleDriveBackup.Core;
+using Google.Apis.Drive.v3;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+
+public class RepairExample
+{
+    public async Task RunRepairAsync(DriveService driveService, AppSettings settings)
+    {
+        // Assumes driveService is authenticated and settings are loaded
+
+        // RepairManager needs a BackupManager instance to perform downloads
+        var backupManager = new BackupManager(driveService, settings);
+        var repairManager = new RepairManager(driveService, settings, backupManager);
+
+        string damagedArchivePath = "path/to/PossiblyDamaged_GDriveBackup.zip";
+
+        var progress = new Progress<BackupProgressReport>(report =>
+        {
+             Console.WriteLine($"[{report.ProcessedItems}/{report.TotalItemsToProcess}] {report.CurrentAction}: {report.CurrentFilePath ?? report.CurrentArchivePath ?? ""}");
+        });
+
+        var cancellationTokenSource = new CancellationTokenSource();
+
+        Console.WriteLine($"Starting repair for: {damagedArchivePath}");
+        RepairResult result = await repairManager.RepairBackupAsync(
+            damagedArchivePath,
+            progress,
+            cancellationTokenSource.Token);
+
+        if (result.Cancelled)
+        {
+            Console.WriteLine("Repair was cancelled.");
+        }
+        else if (result.OverallSuccess)
+        {
+            Console.WriteLine($"Repair completed successfully in {result.Duration.TotalMinutes:F2} minutes.");
+            if (!string.IsNullOrEmpty(result.RepairedArchivePath))
+            {
+                 Console.WriteLine($"Repaired archive created at: {result.RepairedArchivePath}");
+            } else {
+                 Console.WriteLine($"No repairs were needed. Original archive is likely intact.");
+            }
+            Console.WriteLine($"Files Checked: {result.FilesChecked}, Found OK: {result.FilesFoundOk}, Missing Initially: {result.FilesInitiallyMissing}");
+            Console.WriteLine($"Downloads Succeeded: {result.DownloadsSucceeded}, Failed: {result.FailedDownloads}, Skipped (No ID): {result.RepairsSkippedNoId}");
+        }
+        else
+        {
+            Console.WriteLine($"Repair failed or completed with issues after {result.Duration.TotalMinutes:F2} minutes.");
+             Console.WriteLine($"Files Checked: {result.FilesChecked}, Found OK: {result.FilesFoundOk}, Missing Initially: {result.FilesInitiallyMissing}");
+            Console.WriteLine($"Downloads Succeeded: {result.DownloadsSucceeded}, Failed: {result.FailedDownloads}, Skipped (No ID): {result.RepairsSkippedNoId}");
+             if (result.RepairAttempted && string.IsNullOrEmpty(result.RepairedArchivePath))
+             {
+                 Console.WriteLine("A new archive was not created due to errors or skipped files.");
+             }
+        }
+    }
+}
+            </code></pre>
+        </section>
+
+        <!-- --------------------------------------------------------------------- -->
+        <!-- SettingsManager                                                    -->
+        <!-- --------------------------------------------------------------------- -->
+        <section id="SettingsManager">
+            <h2><span class="class">SettingsManager</span> Static Class</h2>
+            <p>
+                Static utility class responsible for loading <code class="class">AppSettings</code> from a JSON file (<code>app_settings.json</code> by default) and saving them back. It handles default values and can load/save settings from/to specific profile paths. Used in conjunction with the <code class="class">AppSettings</code> class.
+            </p>
+            <h3 id="SettingsManager_Members">Key Public Members</h3>
+            <ul>
+                <li id="SettingsManager_LoadSettings"><span class="method">LoadSettings()</span>: Loads settings from the default path.</li>
+                <li id="SettingsManager_SaveSettings"><span class="method">SaveSettings(AppSettings settings)</span>: Saves settings to the default path.</li>
+                <li id="SettingsManager_LoadFromPath"><span class="method">LoadSettingsFromPath(string filePath)</span>: Loads settings from a specific file path.</li>
+                <li id="SettingsManager_SaveToPath"><span class="method">SaveSettingsToPath(AppSettings settings, string filePath)</span>: Saves settings to a specific file path.</li>
+            </ul>
+            <!-- Combined Code Sample is under AppSettings -->
+        </section>
+
+        <!-- --------------------------------------------------------------------- -->
+        <!-- AppSettings                                                          -->
+        <!-- --------------------------------------------------------------------- -->
+        <section id="AppSettings">
+            <h2><span class="class">AppSettings</span> Class</h2>
+            <p>
+                A data class that holds all configurable settings for the application, such as Google Drive folder IDs, local paths for backups and temporary files, restore target ID, backup frequency, parallelism limits, and exclusion rules. Managed by the <code class="class">SettingsManager</code>.
+            </p>
+            <h3 id="AppSettings_Properties">Key Properties</h3>
+            <ul>
+                <li><span class="property">GoogleDriveFolderId</span>: ID of the Google Drive folder to back up.</li>
+                <li><span class="property">LocalBackupArchivePath</span>: Path where backup ZIP files are stored.</li>
+                <li><span class="property">LocalTempWorkPath</span>: Path for temporary extraction/download during operations.</li>
+                <li><span class="property">GoogleDriveRestoreParentId</span>: ID of the Drive folder where restores occur.</li>
+                <li><span class="property">MaxParallelTasks</span>: Maximum number of concurrent downloads/uploads (clamped between 1 and <code class="property">MaxAllowedParallelTasks</code>).</li>
+                <li><span class="property">ExcludedRelativePaths</span>: List of relative paths (from the backup root) to exclude.</li>
+                <li><span class="property">LastSuccessfulBackupUtc</span>: Timestamp of the last successful backup (managed by application logic, not automatically set by SettingsManager).</li>
+                <li><span class="property">BackupCycleHours</span>: Frequency for scheduled backups (if implemented).</li>
+                <li><span class="property">ShowVerboseProgress</span>: Flag to control detailed progress output (if implemented).</li>
+            </ul>
+            <h3 id="AppSettings_Helpers">Key Helper Methods</h3>
+            <ul>
+                <li><span class="method">GetEffectiveMaxParallelTasks()</span>: Helper to get the actual parallelism value to use (respecting defaults and limits).</li>
+                <li><span class="method">IsBackupConfigured()</span>, <span class="method">IsRestoreConfigured()</span>, <span class="method">IsRepairConfigured()</span>: Helpers to check if essential paths are set.</li>
+            </ul>
+            <h3>Code Sample: Loading and Saving Settings</h3>
+            <pre><code class="language-csharp">
+// (Code sample remains the same as previous version)
+using GoogleDriveBackup.Core;
+using System;
+using System.IO; // Required for Path
+
+public class SettingsExample
+{
+    public void ManageSettings()
+    {
+        // Load settings from default location (app_settings.json near executable)
+        AppSettings settings = SettingsManager.LoadSettings();
+
+        // Check if configured, prompt user if needed
+        if (!settings.IsBackupConfigured())
+        {
+            Console.WriteLine("Backup settings are not fully configured.");
+            settings.GoogleDriveFolderId = "YOUR_FOLDER_ID_HERE"; // Get from user
+            settings.LocalBackupArchivePath = @"C:\Backups\GoogleDrive"; // Get from user or use default
+            settings.LocalTempWorkPath = Path.Combine(Path.GetTempPath(), "GoogleDriveTemp"); // Sensible default
+        }
+
+        // Modify a setting
+        settings.MaxParallelTasks = 4; // Use up to 4 parallel operations
+        settings.ExcludedRelativePaths.Add("/My Large Folder/Temporary Files");
+        settings.ExcludedRelativePaths.Add("/~$*"); // Example wildcard-like exclusion (requires custom logic in IsExcluded)
+
+        // Save settings back to the default file
+        bool saved = SettingsManager.SaveSettings(settings);
+        if (saved)
+        {
+            Console.WriteLine("Settings saved successfully.");
+        }
+        else
+        {
+            Console.WriteLine("Failed to save settings.");
+        }
+
+        // Example: Load/Save specific profile
+        // string profilePath = "path/to/work_profile_settings.json";
+        // AppSettings workSettings = SettingsManager.LoadSettingsFromPath(profilePath);
+        // if (workSettings != null) { ... }
+        // SettingsManager.SaveSettingsToPath(settings, profilePath);
+    }
+}
+            </code></pre>
+        </section>
+
+        <!-- --------------------------------------------------------------------- -->
+        <!-- StatusManager                                                        -->
+        <!-- --------------------------------------------------------------------- -->
+        <section id="StatusManager">
+            <h2><span class="class">StatusManager</span> Static Class</h2>
+            <p>
+                A static utility class for loading and saving the <code class="class">BackupStatus</code> to/from a JSON file (<code>backup_status.json</code> by default, near the executable). This allows the application to track when the last backup occurred, potentially for scheduling or informational purposes.
+            </p>
+            <h3 id="StatusManager_Members">Key Public Members</h3>
+            <ul>
+                <li id="StatusManager_LoadStatus"><span class="method">LoadBackupStatus()</span>: Loads the status from the default file.</li>
+                <li id="StatusManager_SaveStatus"><span class="method">SaveBackupStatus(BackupStatus status)</span>: Saves the status to the default file.</li>
+            </ul>
+            <!-- Combined Code Sample is under BackupStatus -->
+        </section>
+
+        <!-- --------------------------------------------------------------------- -->
+        <!-- BackupStatus                                                         -->
+        <!-- --------------------------------------------------------------------- -->
+        <section id="BackupStatus">
+            <h2><span class="class">BackupStatus</span> Class</h2>
+            <p>
+                A simple data class holding the timestamp of the last known successful backup. Managed by the <code class="class">StatusManager</code>.
+            </p>
+            <h3 id="BackupStatus_Property">Key Property</h3>
+            <ul>
+                <li><span class="property">LastSuccessfulBackupTimestamp</span>: A nullable DateTime representing the UTC time of the last successful backup completion.</li>
+            </ul>
+            <h3>Code Sample: Managing Backup Status</h3>
+            <pre><code class="language-csharp">
+// (Code sample remains the same as previous version)
+using GoogleDriveBackup.Core;
+using System;
+
+public class StatusExample
+{
+    public void CheckAndSaveStatus()
+    {
+        // Load the last known status
+        BackupStatus currentStatus = StatusManager.LoadBackupStatus();
+
+        if (currentStatus.LastSuccessfulBackupTimestamp.HasValue)
+        {
+            Console.WriteLine($"Last successful backup was at: {currentStatus.LastSuccessfulBackupTimestamp.Value.ToLocalTime()}");
+        }
+        else
+        {
+            Console.WriteLine("No previous successful backup recorded.");
+        }
+
+        // --- After a successful backup operation ---
+        // BackupResult backupResult = await backupManager.StartBackupAsync(...);
+        // if (backupResult.Success)
+        // {
+        //     Console.WriteLine("Backup successful! Updating status.");
+        //     BackupStatus newStatus = new BackupStatus
+        //     {
+        //         LastSuccessfulBackupTimestamp = DateTime.UtcNow // Record completion time
+        //     };
+        //     StatusManager.SaveBackupStatus(newStatus);
+        // }
+    }
+}
+            </code></pre>
+        </section>
+
+        <!-- --------------------------------------------------------------------- -->
+        <!-- GoogleDriveService                                                     -->
+        <!-- --------------------------------------------------------------------- -->
+        <section id="GoogleDriveServiceClass">
+            <h2><span class="class">GoogleDriveService</span> Static Class</h2>
+            <p>
+                Provides a static method for handling the OAuth 2.0 authentication flow with Google Drive. It uses the <code>client_secrets.json</code> file (expected near the executable) and stores user credentials securely in the user's application data folder to allow reuse without re-prompting for authorization every time.
+            </p>
+            <h3 id="GoogleDriveService_Members">Key Public Member</h3>
+            <ul>
+                <li id="GoogleDriveService_AuthenticateAsync"><span class="method">AuthenticateAsync()</span>: Asynchronously performs the authentication flow and returns an initialized <code class="class">Google.Apis.Drive.v3.DriveService</code> instance if successful, otherwise returns <code>null</code>.</li>
+            </ul>
+            <h3>Code Sample: Authenticating</h3>
+            <pre><code class="language-csharp">
+// (Code sample remains the same as previous version)
+using GoogleDriveBackup.Core;
+using Google.Apis.Drive.v3;
+using System.Threading.Tasks;
+
+public class AuthExample
+{
+    public async Task<DriveService?> GetDriveServiceAsync()
+    {
+        Console.WriteLine("Attempting Google Drive Authentication...");
+        DriveService? service = await GoogleDriveService.AuthenticateAsync();
+
+        if (service != null)
+        {
+            Console.WriteLine("Authentication successful!");
+            // You can now use this 'service' instance with BackupManager, RestoreManager, etc.
+        }
+        else
+        {
+            Console.WriteLine("Authentication failed. Ensure 'client_secrets.json' is present and accessible.");
+            // Handle the error appropriately (e.g., exit application, show error message)
+        }
+        return service;
+    }
+}
+            </code></pre>
+            <div class="note">
+                <strong>Note:</strong> This class expects a <code>client_secrets.json</code> file obtained from Google Cloud Console to be present in the application's base directory.
+            </div>
+        </section>
+
+        <!-- --------------------------------------------------------------------- -->
+        <!-- Progress & Result Records                                             -->
+        <!-- --------------------------------------------------------------------- -->
+        <section id="ProgressAndResults">
+            <h2>Progress & Result Records</h2>
+            <p>
+                The namespace defines several records used for reporting progress during operations and encapsulating the results of those operations.
+            </p>
+            <ul>
+                <li id="Record_BaseProgressInfo"><span class="record">BaseProgressInfo</span>: Abstract base record for common progress information (action, processed count, total count).</li>
+                <li id="Record_BackupProgressReport"><span class="record">BackupProgressReport</span>: Inherits from <code class="record">BaseProgressInfo</code>, adding optional file path information relevant to backup/restore/repair actions. Used with <code class="interface">IProgress<BackupProgressReport></code>.</li>
+                <li id="Record_BackupResult"><span class="record">BackupResult</span>: Contains detailed results of a backup operation, including success status, cancellation flag, duration, file counts (listed, copied, downloaded, skipped, failed), and total bytes transferred.</li>
+                <li id="Record_RestoreResult"><span class="record">RestoreResult</span>: Contains results of a restore operation, including success status, cancellation flag, duration, and file counts (processed, uploaded, skipped/failed).</li>
+                <li id="Record_RepairResult"><span class="record">RepairResult</span>: Contains results of a repair operation, indicating if repair was attempted, overall success (derived), cancellation flag, path to the new archive (if created), duration, and detailed file counts (checked, found OK, missing, downloads attempted/succeeded/failed, skipped).</li>
+            </ul>
+            <h3>Code Sample: Using Progress and Checking Results</h3>
+            <pre><code class="language-csharp">
+// (Code sample remains the same as previous version)
+// (See BackupManager/RestoreManager/RepairManager samples above for IProgress usage)
+
+// Example checking a BackupResult:
+public void CheckBackupResult(BackupResult result)
+{
+    Console.WriteLine($"Backup Duration: {result.Duration}");
+    if (result.Cancelled) {
+        Console.WriteLine("Operation Cancelled.");
+        return;
+    }
+
+    if (result.Success) {
+         Console.WriteLine($"Success! Archive: {result.FinalArchivePath}");
+         Console.WriteLine($"Listed: {result.FilesListed}, Copied: {result.FilesCopied}, " +
+                           $"Downloaded: {result.SuccessfulDownloads}, Skipped: {result.UnsupportedSkipped}");
+    } else {
+         Console.WriteLine("Failed!");
+         Console.WriteLine($"Copy Errors: {result.CopyErrors}, Download Failures: {result.FailedDownloads}");
+    }
+    Console.WriteLine($"Bytes Copied: {result.TotalBytesCopied}, Bytes Downloaded: {result.TotalBytesDownloaded}");
+}
+
+// Example checking a RestoreResult:
+public void CheckRestoreResult(RestoreResult result)
+{
+    Console.WriteLine($"Restore Duration: {result.Duration}");
+    if (result.Cancelled) {
+        Console.WriteLine("Operation Cancelled.");
+        return;
+    }
+
+    if (result.Success) {
+         Console.WriteLine($"Success! Processed: {result.FilesProcessed}, Uploaded: {result.FilesUploaded}");
+    } else {
+         Console.WriteLine("Failed or Incomplete!");
+         Console.WriteLine($"Processed: {result.FilesProcessed}, Uploaded: {result.FilesUploaded}, Skipped/Failed: {result.FilesSkippedOrFailed}");
+    }
+}
+
+// Example checking a RepairResult:
+public void CheckRepairResult(RepairResult result)
+{
+     Console.WriteLine($"Repair Duration: {result.Duration}");
+    if (result.Cancelled) {
+        Console.WriteLine("Operation Cancelled.");
+        return;
+    }
+
+    Console.WriteLine($"Repair Attempted: {result.RepairAttempted}");
+    if(result.RepairAttempted) {
+        Console.WriteLine($"Overall Success: {result.OverallSuccess}");
+        Console.WriteLine($"Repaired Archive: {result.RepairedArchivePath ?? "Not created"}");
+        Console.WriteLine($"Checked: {result.ManifestEntries}, Found OK: {result.FilesFoundOk}, Missing: {result.FilesInitiallyMissing}");
+        Console.WriteLine($"Downloads Attempted: {result.DownloadsAttempted}, Succeeded: {result.DownloadsSucceeded}, Failed: {result.FailedDownloads}");
+        Console.WriteLine($"Repairs Skipped (No ID): {result.RepairsSkippedNoId}");
+        Console.WriteLine($"Total Bytes Repaired: {result.TotalBytesRepaired}");
+    } else {
+        Console.WriteLine("No repair attempt was made (e.g., archive not found or manifest load failed).");
+    }
+}
+            </code></pre>
+        </section>
+    </main>
+
+    <!-- JavaScript for Menu Toggle -->
+    <script>
+        const menuToggle = document.getElementById('menu-toggle');
+        const mainNav = document.getElementById('main-nav');
+        const body = document.body;
+        const navLinks = mainNav.querySelectorAll('a.nav-link'); // Select only main links in nav
+
+        menuToggle.addEventListener('click', () => {
+            mainNav.classList.toggle('open');
+            menuToggle.classList.toggle('open');
+            // Optional: Push body content slightly
+            // body.classList.toggle('menu-body-pushed');
+        });
+
+        // Close menu when a navigation link is clicked
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mainNav.classList.remove('open');
+                menuToggle.classList.remove('open');
+                // Optional: Remove body push class
+                // body.classList.remove('menu-body-pushed');
+            });
+        });
+
+        // Optional: Close menu if clicking outside of it
+        document.addEventListener('click', (event) => {
+            const isClickInsideNav = mainNav.contains(event.target);
+            const isClickOnToggle = menuToggle.contains(event.target);
+
+            if (!isClickInsideNav && !isClickOnToggle && mainNav.classList.contains('open')) {
+                mainNav.classList.remove('open');
+                menuToggle.classList.remove('open');
+                // body.classList.remove('menu-body-pushed');
+            }
+        });
+
+        // Optional: Simple Scrollspy for highlighting active link
+        const sections = document.querySelectorAll('section[id], h1[id]'); // Elements to track
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                // Adjust offset as needed based on fixed header height
+                if (pageYOffset >= (sectionTop - 100)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+             navLinks.forEach(link => {
+                link.classList.remove('active');
+                 // Match link href (e.g., #BackupManager) with current section id
+                if (current && link.getAttribute('href').substring(1) === current) {
+                    link.classList.add('active');
+                 } else if (!current && link.getAttribute('href') === '#top') {
+                    // Highlight top link if at the very top
+                    link.classList.add('active');
+                 }
+            });
+        }, { passive: true }); // Improve scroll performance
+
+    </script>
+
+</body>
+</html>

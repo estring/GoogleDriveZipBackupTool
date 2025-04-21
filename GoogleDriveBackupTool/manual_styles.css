@@ -1,0 +1,272 @@
+﻿body {
+    font-family: sans-serif;
+    line-height: 1.6;
+    margin: 0; /* Remove default margin */
+    padding: 0;
+    padding-top: 60px; /* Add padding to prevent content from hiding under the header */
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+/* Fixed Header/Toolbar */
+.top-bar {
+    position: fixed; /* Keep it at the top */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px; /* Fixed height */
+    background-color: #333;
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    z-index: 1000; /* Ensure it's above other content */
+}
+
+.hamburger-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    margin-right: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 30px;
+    height: 25px;
+    box-sizing: border-box;
+}
+
+    .hamburger-btn .bar {
+        display: block;
+        width: 100%;
+        background-color: white;
+        height: 2px; /* Thickness of the bars */
+
+        border-radius: 2px;
+        transition: all 0.3s ease-in-out;
+    }
+    /* Optional: Animate hamburger to 'X' when open */
+    .hamburger-btn.open .bar:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+    }
+
+    .hamburger-btn.open .bar:nth-child(2) {
+        opacity: 0;
+    }
+
+    .hamburger-btn.open .bar:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+    }
+
+
+.top-bar-title {
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+/* Side Navigation Panel Styling */
+.side-nav {
+    position: fixed;
+    top: 50px; /* Start below the header */
+    left: 0;
+    width: 280px; /* Width of the side panel */
+    height: calc(100% - 50px); /* Full height below header */
+    background-color: #f4f4f4;
+    border-right: 1px solid #ccc;
+    overflow-y: auto; /* Allow scrolling if content overflows */
+    transform: translateX(-100%); /* Hidden by default */
+    transition: transform 0.3s ease-in-out;
+    z-index: 999; /* Below header but above overlay */
+    padding: 15px;
+}
+
+    .side-nav.open {
+        transform: translateX(0); /* Slide in */
+    }
+
+    .side-nav h3 { /* Style for headings inside nav */
+        margin-top: 0;
+        margin-bottom: 15px;
+        font-size: 1.1em;
+        color: #333;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 8px;
+    }
+
+/* Language Switch inside Nav */
+.nav-lang-switch {
+    margin-bottom: 20px;
+}
+
+    .nav-lang-switch button {
+        display: block; /* Stack buttons vertically */
+        width: 100%;
+        padding: 8px 10px;
+        margin-bottom: 5px;
+        cursor: pointer;
+        border: 1px solid #ccc;
+        background-color: #eee;
+        border-radius: 4px;
+        text-align: left;
+    }
+
+        .nav-lang-switch button.active {
+            background-color: #ddd;
+            font-weight: bold;
+            border-color: #bbb;
+        }
+
+/* TOC Styling inside Nav */
+.nav-toc {
+    margin-top: 15px;
+}
+
+    .nav-toc ol {
+        list-style: none;
+        padding-left: 0;
+        margin: 0;
+    }
+
+    .nav-toc li a {
+        display: block; /* Make entire area clickable */
+        padding: 6px 10px; /* Added padding */
+        text-decoration: none;
+        color: #0056b3;
+        border-bottom: 1px dotted #eee; /* Subtle separator */
+        border-radius: 3px; /* Slight rounding */
+    }
+
+    .nav-toc li:last-child a {
+        border-bottom: none;
+    }
+
+    .nav-toc li a:hover {
+        background-color: #e9e9e9;
+    }
+
+.toc-lang-container {
+    display: none; /* Hide EN/DE TOCs by default */
+}
+
+
+/* Main Content Area */
+.main-content {
+    padding: 20px;
+    transition: margin-left 0.3s ease-in-out; /* If pushing content */
+    max-width: 900px; /* Optional: Limit content width for readability */
+    margin-left: auto; /* Center content if max-width is set */
+    margin-right: auto;
+}
+/* Optional: Push content when nav is open */
+/* body.nav-open .main-content { margin-left: 280px; } */
+
+/* Overlay for closing nav */
+.overlay {
+    position: fixed;
+    top: 50px; /* Start below header */
+    left: 0;
+    width: 100%;
+    height: calc(100% - 50px);
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+    display: none; /* Hidden by default */
+    z-index: 998; /* Below nav, above content */
+}
+
+    .overlay.open {
+        display: block;
+    }
+
+/* Standard Content Styles */
+h1, h2, h3 { /* H1 only used in main content */
+    color: #333;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
+    scroll-margin-top: 60px; /* Adjusted for fixed header */
+}
+
+h1 {
+    font-size: 2em;
+}
+
+h2 {
+    font-size: 1.5em;
+    margin-top: 30px;
+}
+
+h3 {
+    font-size: 1.2em;
+    margin-top: 25px;
+}
+
+code {
+    background-color: #f4f4f4;
+    padding: 2px 5px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    font-family: monospace;
+    word-break: break-all; /* Break long code words */
+}
+
+pre {
+    background-color: #f4f4f4;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+    pre code {
+        background-color: transparent;
+        border: none;
+        padding: 0;
+    }
+
+div.lang-content ul, div.lang-content ol {
+    margin-left: 20px;
+}
+
+div.lang-content li {
+    margin-bottom: 8px;
+}
+
+strong, b {
+    font-weight: bold;
+}
+
+em, i {
+    font-style: italic;
+}
+
+.lang-content {
+    display: none;
+}
+/* Keep hiding non-active language */
+.warning {
+    color: #a00;
+    font-weight: bold;
+}
+
+.note {
+    font-style: italic;
+    color: #555;
+}
+
+.recommendation::before {
+    content: "💡 ";
+}
+
+.new-feature {
+    font-weight: bold;
+    color: #006400; /* Dark Green */
+}
+
+.updated-feature {
+    font-style: italic;
+    color: #00008B; /* Dark Blue */
+}
