@@ -57,7 +57,7 @@ This tool was created to address these needs by providing:
 ## Technology Stack
 
 -   **Language:** C#
--   **Framework:** .NET (e.g., .NET 6, 7, or 8 - specify if known)
+-   **Framework:** .NET (.NET 8)
 -   **Google API:** Google Drive API v3 (`Google.Apis.Drive.v3`)
 -   **Authentication:** Google OAuth 2.0 (`Google.Apis.Auth`)
 -   **JSON Handling:** `System.Text.Json`
